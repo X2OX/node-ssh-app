@@ -23,7 +23,7 @@ jobs:
     - name: Build and push Docker image
       uses: docker/build-push-action@v3
       with: 
-        context: build/debian
+        context: .
         push: true
         platforms: linux/amd64,linux/arm64
         tags: ghcr.io/x2ox/nsa-debian:latest
