@@ -28,7 +28,7 @@ RUN /bin/zsh -c 'source ~/.zshrc'
 RUN arch=$(arch | sed s/aarch64/arm64/ | sed s/x86_64/amd64/) && curl -L --output cloudflared.deb "https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-${arch}.deb"
 RUN dpkg -i cloudflared.deb
 
-COPY build/debian/run.sh run.sh
+COPY run.sh run.sh
 RUN chmod +x run.sh
 
 CMD run.sh
