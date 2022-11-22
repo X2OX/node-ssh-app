@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: node-ssh-app
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-ssh-app
+  namespace: node-ssh-app
+  labels:
+    k8s-app: node-ssh-app
+spec:
+  selector:
+    matchLabels:
+      name: node-ssh-app
+  template:
+    metadata:
+      labels:
+        name: node-ssh-app
+    spec:
+      terminationGracePeriodSeconds: 30
+      containers:
+        - name: node-ssh-app
+          image: ghcr.io/x2ox/nsa-debian:latest
+          env:
+            - name: SERVICE
+              value: "nsa-server-service"

@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: node-ssh-app
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nsa-server
+  namespace: node-ssh-app
+  labels:
+    app: nsa-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nsa-server
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: nsa-server
+    spec:
+      containers:
+        - name: nsa-server
+          image: ghcr.io/x2ox/nsa-server:latest
+          env:
+            - name: TOKEN
+              value: ""
+            - name: IDENTIFIER
+              value: ""
+            - name: DOMAIN
+              value: ""
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nsa-server-service
+  namespace: node-ssh-app
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+  selector:
+    app: nsa-server
